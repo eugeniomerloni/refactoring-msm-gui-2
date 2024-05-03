@@ -13,8 +13,22 @@
 #  director_id :integer
 #
 class Movie < ApplicationRecord
+  has_many(:characters, class_name: "Character", foreign_key: "character_id")
+
+  def characters
+    my_id = self.id
+
+    matching_characters = Character.where({ :movie_id => my_id })
+
+    return matching_characters
+  end
+
+
+
   validates(:director_id, presence: true)
   validates(:title, uniqueness: true)
+
+  belongs_to(:director)
 
   def director
     key = self.director_id
